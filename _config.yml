@@ -28,7 +28,7 @@ twitter_username: mitshan1994
 github_username:  mitshan1994
 
 # Build settings
-theme: jekyll-theme-midnight
+theme: jekyll-theme-minimal
 plugins:
   - jekyll-feed
 
