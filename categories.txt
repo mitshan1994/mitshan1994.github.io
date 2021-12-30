@@ -1,0 +1,5 @@
+This is used to record current available categories.
+
+c#
+git
+common
