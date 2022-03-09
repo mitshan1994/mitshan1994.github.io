@@ -4,5 +4,5 @@ title:  "Modules in Python"
 categories: python
 ---
 
-## __init__.py
-Each package's directory should contain a **__init__.py** file, to make it a valid python package.
+## \_\_init\_\_.py
+Each package's directory should contain a **\_\_init\_\_.py** file, to make it a valid python package.
