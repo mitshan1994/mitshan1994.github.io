@@ -215,4 +215,71 @@ q.choice_set.all()
 q.choice_set.create(choice_text='Not much', votes=0)
 ```
 
+### Introducing the Django Admin
+#### Creating an admin user
+First, we need to create a user who can login to the admin site:
+```
+python manage.py createsuperuser
+```
 
+Then run the server, and open browser to visit **http://127.0.0.1:8000/admin/**.
+
+You should see a few types of editable content: groups and users. They are provided by **django.contrib.auth**.
+
+#### Make the poll app modifiable in the admin
+We need to tell the admin that **Question** objects have an admin interface. Open **polls/admin.py**, edit it:
+```python
+from django.contrib import admin
+from .models import Question
+
+admin.site.register(Question)
+```
+
+### View overview
+A view is a "type" of web page in your Django application that serves a specific function and has a specific template.
+
+In Django, web pages the other content are delivered by views. Each view is represented by a Python function (or method, in the case of class-based views).
+
+To get from a URL to a view, Django uses what are known as 'URLconfs'. A URLconf maps URL patterns to views.
+
+#### Writing more views
+Add more views in **polls/views.py**, which takes an argument:
+```python
+def detail(request, question_id):
+    return HttpResponse("You're looking at question %s." % question_id)
+
+def results(request, question_id):
+    response = "You're looking at the results of question %s."
+    return HttpResponse(response % question_id)
+
+def vote(request, question_id):
+    return HttpResponse("You're voting on question %s." % question_id)
+```
+
+Then add these views into **polls.urls** module:
+```python
+from django.urls import path
+
+from . import views
+
+urlpatterns = [
+    # ex: /polls/
+    path('', views.index, name='index'),
+    # ex: /polls/5/
+    path('<int:question_id>/', views.detail, name='detail'),
+    # ex: /polls/5/results/
+    path('<int:question_id>/results/', views.results, name='results'),
+    # ex: /polls/5/vote/
+    path('<int:question_id>/vote/', views.vote, name='vote'),
+]
+```
+
+When somebody requests a page from your website - say, "/polls/34/", Django will load the **mysite.urls** Python module because it's pointed to by the **ROOT_URLCONF** settings. It finds the variable named **urlpatterns** and traverses the pattern in order. After finding the match at **'polls/'**, it strips off the matching text and sends the remaining text - **"34"** - to the 'polls.urls' URLconf for further processing. Then it matches **'<int:question_id>/'**, resulting in a call to the **detail()** view like so:
+```
+detail(request=<HttpRequest object>, question_id=34)
+```
+
+Using angle brackets "captures" part of the URL and sends it as a keyword argument to the view function. The **question_id** part of the string defines the name that will be used to identify the matched pattern, and the **int** part is a converter that determines what patterns should match this part of the URL path.
+
+#### Write views that actually do something
+Each view is responsible for doing one of two things: returning an **HttpResponse** object containing the content for the requested page, or raising an exception such as **Http404**. The rest is up to you.
