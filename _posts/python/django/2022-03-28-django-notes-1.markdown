@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Django Notes"
+title:  "Django Notes 1"
 categories: django
 ---
 
@@ -396,5 +396,40 @@ The template system uses dot-lookup syntax to access variable attributes.
 Method-calling happens in the {% raw %}`{% for %}`{% endraw %} loop: **question_choice_set.all** is interpreted as the Python code **question.choice_set.all()**, which returns an iterable of **Choice** objects and is suitable for use in the {% raw %}`{% for %}`{% endraw %} tag.
 
 ### Removing hardcoded URLs in templates
+The problem with this hardcoded, tightly-coupled approach is that it becomes challenging to change URLs on projects with a lot of templates. However, since you defined the name argument in the **path()** functions in the **polls.urls** module, you can remove a reliance on specific URL paths defined in your url configurations by using the {% raw %}**{% url %}**{% endraw %} template tag:
 
+{% raw %}
+```
+<li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li>
+```
+{% endraw %}
 
+The way this works is by looking up the URL definition as specified in the **polls.urls** module.
+
+### Namespacing URL names
+To distinguish urls with the same name in different apps, you can add namespaces to your URLconf. In the **polls/urls.py**, go ahead and add an **app_name** to set the application namespace:
+
+```python
+from django.urls import path
+from . import views
+
+app_name = 'polls'
+urlpatterns = [
+    path('', views.index, name='index'),
+    path('<int:question_id>/', views.detail, name='detail'),
+    path('<int:question_id>/results/', views.results, name='results'),
+    path('<int:question_id>/vote/', views.vote, name='vote'),
+]
+```
+
+Now change your **polls/index.html** template from:
+
+{% raw %}
+`<li><a href="{% url 'detail' question.id %}">{{ question.question_text }}</a></li>`
+{% endraw %}
+
+to
+
+{% raw %}
+`<li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>`
+{% endraw %}
