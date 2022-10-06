@@ -14,7 +14,7 @@ or
 where `TResult` is the return type of Func1.
 
 ### Exceptions
-When async function throws exception, the client code could catch it when the `Task<TResult` is awaited.
+When async function throws exception, the client code could catch it when the `Task<TResult>` is awaited.
 
 ### Await Several Tasks
 `await Task.WhenAll(task1, task2, task3);`
