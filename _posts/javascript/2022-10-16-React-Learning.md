@@ -20,3 +20,39 @@ When React sees user-defined element in JSX, it parses the attributes into a sin
 Component names should start with a captical letter. Lower letter started words will be viewed as a HTML tag.
 
 All react components should act like pure functions with respect to their props.
+
+If you want to disable a component to render, return **null** as the React element (for example in render() function).
+
+#### Function Style Component
+A function is called a React Component if it accepts a single "props" argument, and returns a React element (which can be created using JSX).
+
+#### Mounting and Unmounting (Lifecycle Methods)
+When a Component is rendered to the DOM for the first time, it's called "mounting" in React. When a Component instance is removed, it's called "unmounting" in React. The following are two special member functions used when "mounting" and "unmounting":
+```
+class XXX extends React.Component {
+	...
+	componentDidMount() { ... }
+	componentWillUnmount() { ... }
+}
+```
+
+### States
+You shouldn't modify components' state directly. Instead, **this.setState(...)** should be used. React can automatically re-render after the function calls.
+
+#### State Update are Merged
+If a field is not appeared in the setState parameter object, it will preserve its current value.
+
+### Events
+Event handlers in React are similar to them in h5. But there are some differences.
+* Event names are camelcase style, while they are lowercase in h5.
+* In JSX, function is passed as event handler, not string.
+* "preventDefault" should be called explicitly, while in h5 false can be returned, to prevent the default behaviour.
+
+### Select Forms
+In HTML, **\<select\>** is used to create a drop-down list.
+
+### "Source of Truth"
+There should be a "source of truth", for any data which may change in React.
+
+### this.props.children
+Inside the React component tag, elements will be generated and pass to the component as **props.children**.

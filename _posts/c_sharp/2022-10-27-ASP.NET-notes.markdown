@@ -1,0 +1,12 @@
+---
+layout: post
+title:  "ASP.NET Core Notes"
+categories: c#
+---
+
+### Json Field Rename
+When formating model class data to json string, the default json field name is the model class property name(with some possible case change). If a customized field name is required, we can add attribute to properties to indicate ASP.NET to do it:
+1. Add NewtonsoftJson support in ASP.NET project. Install the package `Microsoft.AspNetCore.Mvc.NewtonsoftJson`. Then in main, we can add support by `builder.Services.AddControllers().AddNewtonsoftJson()`.
+2. Annotate model class properties with `[JsonProperty(PropertyName = "haha")]`, where we can replace our customized name.
+After these steps, json formatter will take our customized names into consideration when serializing model data.
+
