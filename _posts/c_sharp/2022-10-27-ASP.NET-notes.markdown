@@ -18,8 +18,8 @@ When Web API calls a method on a controller, its parameters must be set values, 
 * If the parameter is a "simple" type, it tries to parse it from url's query string.
 * If the parameter is a "complex" type, it tries to parse it from body, such as json or xml. A "media-type formatter" is used to parse it.
 
-#### \[FromUri\] and \[FromBody\] Attributes
-These two attributes can be used to decorate parameters to force them to be parsed from uri or body data. **\[FromBody\]** can only be applied once in parameters.
+#### \[FromQuery\] and \[FromBody\] Attributes
+These attributes can be used to decorate parameters to force them to be parsed from query string and body data. **\[FromBody\]** can only be applied once in parameters.
 
 ##### Bind Json Array
 If we want to bind json array to parameters, we can use `[FromBody]`, and `List<SomeType>`, to parse top json array in body.
