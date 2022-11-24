@@ -13,3 +13,13 @@ After these steps, json formatter will take our customized names into considerat
 ### Return Common Code From Controller
 The action function's return type may be `ActionResult` or `async Task<ActionResult>`. And `Ok()`, `StatusCode(code)` may be returned to specify the HTTP response code.
 
+### Parameter Binding
+When Web API calls a method on a controller, its parameters must be set values, a process called parameter binding. Here are basic rules:
+* If the parameter is a "simple" type, it tries to parse it from url's query string.
+* If the parameter is a "complex" type, it tries to parse it from body, such as json or xml. A "media-type formatter" is used to parse it.
+
+#### \[FromUri\] and \[FromBody\] Attributes
+These two attributes can be used to decorate parameters to force them to be parsed from uri or body data. **\[FromBody\]** can only be applied once in parameters.
+
+##### Bind Json Array
+If we want to bind json array to parameters, we can use `[FromBody]`, and `List<SomeType>`, to parse top json array in body.
