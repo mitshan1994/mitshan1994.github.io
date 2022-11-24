@@ -23,3 +23,16 @@ These two attributes can be used to decorate parameters to force them to be pars
 
 ##### Bind Json Array
 If we want to bind json array to parameters, we can use `[FromBody]`, and `List<SomeType>`, to parse top json array in body.
+
+#### Bind Url Path to Parameters
+If we want to parse a section in url to controller's parameter, `RouteAttribute` can be used to achieve this:
+```
+[Route("api/{controller}/{action}/{myid}")]
+public async Task<IActionResult> GetSth(string myid)
+{
+	...
+}
+```
+
+#### RouteAttribute Concatenation
+If we have a controller with attribute `[Route("api/{controller}/{action}")]`, and we make an action method `[Route("{myid}")]`, the full path to this action is `[Route("api/{controller}/{action}/{myid}")]`.
