@@ -13,8 +13,8 @@ After these steps, json formatter will take our customized names into considerat
 ### Return Common Code From Controller
 The action function's return type may be `ActionResult` or `async Task<ActionResult>`. And `Ok()`, `StatusCode(code)` may be returned to specify the HTTP response code.
 
-### Parameter Binding
-When Web API calls a method on a controller, its parameters must be set values, a process called parameter binding. Here are basic rules:
+### Model Binding
+When Web API calls a method on a controller, its parameters must be set values, a process called model binding (or parameter binding). Here are basic rules:
 * If the parameter is a "simple" type, it tries to parse it from url's query string.
 * If the parameter is a "complex" type, it tries to parse it from body, such as json or xml. A "media-type formatter" is used to parse it.
 
@@ -36,3 +36,8 @@ public async Task<IActionResult> GetSth(string myid)
 
 #### RouteAttribute Concatenation
 If we have a controller with attribute `[Route("api/{controller}/{action}")]`, and we make an action method `[Route("{myid}")]`, the full path to this action is `[Route("api/{controller}/{action}/{myid}")]`.
+
+#### \[BindProperty\] and \[BindProperties\]
+`[BindProperty]` can be applied to public property of controller or `PageModel` class to cause model binding to target that property.
+
+`[BindProperties]` can be applied to controller class to request model binding to target all public properties.
