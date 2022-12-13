@@ -77,7 +77,62 @@ Due to its frequent use, `v-on` also has a shorthand syntax:
 ```html
 <button @click="increment">{{ count }}</button>
 ```
-Here, `increment` is referencing a function declared in `<script setup>`.
+Here, `increment` is referencing a function declared in `<script setup>`. Inline handlers is also supported:
+```html
+<button @click="count++">{{ count }}</button>
+```
+
+#### Event Handler Parameter
+The event handler automatically receives the native DOM event object, which triggers the it.
+
+#### Event Modifiers
+It's common to call `event.preventDefault()` or `event.setPropagation()` inside event handlers. Vue can set this when binding event handlers, using **event modifiers**, which are postfixs to `v-on` directives. Here are some of them:
+* `.stop`
+* `.prevent`
+* `.self`
+* `.capture`
+* `.once`
+* `.passive`
+For example: `<a @click.stop="doThis"> </a>`. And they can be chained one after another.
+
+#### Key Modifiers
+Vue allows adding key modifiers to `v-on` or `@` when listening for key events.
+```
+<input @keyup.enter="submitThis" />
+```
+Vue provides some common key alias:
+* `.enter`
+* `.tab`
+* `.delete`
+* `.esc`
+* `.space`
+* `.up`
+* `.down`
+* `.left`
+* `.right`
+And modifier keys:
+* `.ctrl`
+* `.alt`
+* `.shift`
+* `.meta` (This is WIN key on Windows)
+
+For example:
+```html
+<input @keyup.alt.enter="clear" />
+```
+
+`.exact` modifier allows control of exact combination of system modifiers needed to trigger an event.
+```html
+<button @click.ctrl.exact="onlyCtrlPressedFunc"></button>
+```
+
+#### Mouse Modifiers
+Some:
+* `.left`
+* `.right`
+* `.middle`
+
+These modifiers restrict the handler to events triggered by a specific mouse button.
 
 ### Form Bindings
 Using `v-bind` and `v-on` together, we can create two-way bindings on form input elements:
