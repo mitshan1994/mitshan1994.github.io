@@ -83,7 +83,7 @@ Here, `increment` is referencing a function declared in `<script setup>`. Inline
 ```
 
 #### Event Handler Parameter
-The event handler automatically receives the native DOM event object, which triggers the it.
+The event handler automatically receives the native DOM event object, which triggers it.
 
 #### Event Modifiers
 It's common to call `event.preventDefault()` or `event.setPropagation()` inside event handlers. Vue can set this when binding event handlers, using **event modifiers**, which are postfixs to `v-on` directives. Here are some of them:
@@ -151,6 +151,11 @@ To simplify two-way bindings, Vue provides a directive, `v-model`, which is esse
 ```
 `v-model` automatically syncs the `<input>`'s value with the bounded state, so we no longer need to use an event handler for that.
 
+#### Some Modifiers to `v-model`
+* `.number`
+* `.trim`
+* `.lazy`
+
 ### Computed Value
 Introducing `computed()`. We can create a computed ref that computes its `.value` based on other reactive data sources.
 
@@ -167,7 +172,13 @@ onMounted(() => {
   // Component is now mounted.
 })
 ```
-This is called a lifecycle hook.
+This is called a lifecycle hook. The `onMounted()` will be called after the component finishes the initial rendering and creates the DOM nodes.
+
+
+Some lifecycle hooks:
+* onMounted
+* onUpdated
+* onUnmounted
 
 ### Watchers
 Sometimes we need to perform some "side effects" reactively, for example when some value changed, to perform an action.
@@ -196,9 +207,22 @@ const props = defineProps({
 })
 </script>
 ```
+or
+```javascript
+<script setup>
+defineProps(['title']);
+
+// Access
+console.log(props.title);
+<script>
+```
 Here `defineProps()` is a compile time macro. And now we can pass the props to child like attributes:
 ```javascript
 <ChildComp :msg="myVariable" />
+```
+or
+```javascript
+<ChildComp msg="constant string" />
 ```
 
 ### Emits
@@ -213,6 +237,19 @@ emit('response', 'hello');
 The first argument to `emit()` is the event name. Any additional arguments are passed on to the event listener.
 
 The parent can listen to child-emitted events using `v-on`, and the handler receives the extra argument from the child emit call.
+
+A component can emit custom events directly in template expressions, using the built-in `$emit` method:
+```
+<button @click="$emit('someEvent')">click me</button>
+```
+But `$emit` method is not accessible within the `<script setup>`.
+
+The parent listens to it using `v-on`:
+```
+<MyComponent @some-event="callback" />
+<MyComponent @some-event.once="callback" />
+```
+Event names are automatically transformed to **kebab-case**, which is recommended.
 
 ### ref Unwrapping in Templates
 Only top-level `ref` properties will be unwrapped automatically in `template`, where a `.value` is unnecessary.
