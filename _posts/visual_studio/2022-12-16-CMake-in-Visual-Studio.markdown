@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "CMake in Visual Studio"
-categories: visual-studio
+categories: VisualStudio
 ---
 
 ### Some Common Configs

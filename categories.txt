@@ -8,4 +8,4 @@ media
 javascript
 nginx
 qt
-visual-studio
+VisualStudio
