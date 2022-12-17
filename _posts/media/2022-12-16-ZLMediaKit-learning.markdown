@@ -6,7 +6,7 @@ categories: media
 
 This is a note on zlmediakit, reading/learning its code.
 
-## zltoolkit
+## zltoolkit & zlmediakit
 
 ### Some Classes
 
@@ -43,6 +43,12 @@ In conclusion, `EventPoller` do 3 things:
 * Execute tasks in a later time
 * Network I/O event listening (and call callbacks when event triggered).
 
+##### Async Task Implementation
+The `async()`, `async_first()` and `async_l` function will push the task into task queue, and write to inner pipe to wake up task executing event in main loop. Pipe reading event handler is **epolled** and executed.
+
+##### Delayed Task Implementation
+Delayed tasks have a map container with delayed time as key and callback as value. Manipulation of this container is always in the it's thread, so  protection of mutex is unnecessary (Pushing task into it is executed asynchronously when necessary).
+
 #### EventPollPool
 `EventPollPool` inherits `TaskExecutorGetterImp`, serving as the container of `EventPoller`s. The number of `EventPoller` instances is controlled by it.
 
@@ -50,6 +56,41 @@ It is used as Singleton in zlmediakit.
 
 #### WorkThreadPool
 `WorkThreadPool` inherits `TaskExecutorGetterImp`, too. The difference between it and `EventPollPool` is that, the priority is lower for `WorkThreadPool`. And it's mainly used to initiate some tasks, instead of listening and responding.
+
+### Network Classes
+
+* `SockNum`: consisting of a socket file descriptor and socket type.
+* `SockFD`: consisting of a `SockNum` and an `EventPoller`.
+
+#### Socket Class
+`Socket` class is a big one, consisting of `SockFD`, buffers, `EventPoller`, all kinds of event handlers, and some utilities to record some statistics.
+
+There are two groups of event handlers: inner event handlers and others set by client.
+
+#### Server Class
+`Server` class contains nothing but an `EventPoller`. `TcpServer` and `UdpServer` are derived from `Server`.
+
+`Server` extends `mINI` class, which adds parsing config file functions to it and subclasses.
+
+#### SocketHelper Class
+`SocketHelper` class extends `SockSender`, `SockInfo` and `TaskExecutorInterface`. So it can send data, get socket information, and execute task sync/async.
+
+`SocketHelper` owns a pointer to an `EventPoller`, so tasks are delegated to the event poller.
+
+#### Session Class
+`Session` class extends `SocketHelper`. Main interfaces for sub-classes is:
+* `onRecv` for network data reading.
+* `onError` for error handding.
+* `onManager` for timeout management.
+
+Since `SocketHelper` is extended, it can also send data to remote endpoint.
+
+Subclasses of `Session` includes:
+* `RtspSession`
+* `HttpSession`
+* `RtpSession`
+* `WebRtcSession`
+
 
 ## MediaServer
 **MediaServer** uses **zltoolkit** and **zlmediakit** library, as a standalone media server process, with various functions.
