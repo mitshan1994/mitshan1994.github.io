@@ -95,5 +95,10 @@ Subclasses of `Session` includes:
 ## MediaServer
 **MediaServer** uses **zltoolkit** and **zlmediakit** library, as a standalone media server process, with various functions.
 
+### TcpServer Accept
+There are several cloned tcp server (one per event poller), accepting new connections, and only one event poller accepts when connection comes.
+
+After accepted, the tcp socket can be switch to another event poller to listen to *Read Event* (tcp data read).
+
 ### Starting Procedures
 

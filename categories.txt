@@ -9,3 +9,4 @@ javascript
 nginx
 qt
 VisualStudio
+cpp
