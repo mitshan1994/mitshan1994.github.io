@@ -102,3 +102,11 @@ After accepted, the tcp socket can be switch to another event poller to listen t
 
 ### Starting Procedures
 
+### RtspSession Procedures
+When a rtsp client connects, basic procedures are:
+* A `RtspSession` object is created in rtsp TcpServer's `onAcceptConnection()` (in its event loop). Then socket's onRead and onError is set, and data will be delegated to `RtspSession`'s `onRecv()` and `onError()`.
+* **READ** event of socket is listened (added to epoll).
+* When new network data comes, session's `onRecv` is triggered. In this scenario, `HttpRequestSplitter::input()` is called, which parses the http-like requests. Headers (before content) fields and contents (if any) are split, and `onRecvHeader()` and `onRecvContent()` are called in order, which are virtual member functions (implemented in `RtspSplitter`, a parent of `RtspSession`).
+* If there is no content in request, `onWholeRtspPacket()` will be called with parsed request in `onRecvHeader()`. Otherwise, `onWholeRtspPacket()` will be deferred to be called in `onRecvContent()`.
+* Certain handling method (like OPTIONS, DESCRIBE, SETUP, ...) is called.
+* If no more things is needed in handling method, rtsp response will be generated and sending to client. If some operation is necessary, it may be performed asynchronously. A function object is created, in which sending response to client is handled, and is passed to the actions to be performed. After actions are finished, the previous function object is called and response is sent.
