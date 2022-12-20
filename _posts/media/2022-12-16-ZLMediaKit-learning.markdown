@@ -57,6 +57,27 @@ It is used as Singleton in zlmediakit.
 #### WorkThreadPool
 `WorkThreadPool` inherits `TaskExecutorGetterImp`, too. The difference between it and `EventPollPool` is that, the priority is lower for `WorkThreadPool`. And it's mainly used to initiate some tasks, instead of listening and responding.
 
+### Buffers
+Class `Buffer` is the base class of all buffer types. It's an abstract class, where underlying data's implementation is deferred to subclasses. All buffer types are non-copyable.
+
+#### BufferSock Class
+Class `BufferSock` inherits `Buffer`. It represents a buffer to be sent through socket.
+
+#### BufferOffset Template Class
+Template class `BufferOffset` stores data and return actual data with offset and less size.
+
+`using BufferString = BufferOffset<std::string>;`
+
+#### BufferRaw Class
+Class `BufferRaw` owns a `char *` data.
+
+### Media Classes
+
+#### MediaSource Class
+Class `MediaSource` inherits `TrackSource`, and is the base class of all media sources. It can get stream basic info, such as scheme, vhost, app, stream id, and track info.
+
+There are static functions inside it, such as `find()`, `findAsync()`, which finds the specific stream.
+
 ### Network Classes
 
 * `SockNum`: consisting of a socket file descriptor and socket type.
