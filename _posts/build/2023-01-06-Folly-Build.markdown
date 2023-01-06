@@ -38,7 +38,7 @@ I think the reason I need to link to these libraries may be one of the reasons:
 * Only `fmt` library is donwloaded and compiled, all others uses system libraires downloaded/installed using `apt`(including boost).
 
 #### Boost Library
-When I compiling folly, `boost` is installed through `apt`. So, when I using my built boost library during linking to `folly`, strange errors occur. This is due to different versions of boost used during `folly` compiling, and my program linking to `folly` library.
+When I compiling folly, `boost` is installed through `apt`. So, when I using my built boost library during linking to `folly`, strange errors occur. This is due to different versions of boost used between `folly` compiling, and my program linking to `folly` library.
 
 So I removed my boost library, just using the system one, to solve this problem.
 
@@ -55,4 +55,4 @@ libboost_thread.a
 These can be tried if linking fails due to undefined reference of boost related symbols.
 
 ### Questions
-* If I install libfmt using `apt install libfmt-dev`, together with option `--allow-system-packages` in build scripts, do i have to manually install folly-compiled version of libfmt? Since `libfmt-dev` is not installed as a system dependency in `getdeps.py` script.
+* If I install libfmt using `apt install libfmt-dev`, together with option `--allow-system-packages` in build scripts, do i have to manually install folly-compiled version of libfmt? Since `libfmt-dev` is not installed as a system dependency in `getdeps.py` script. **ANSWER**: After testing, `libfmt-dev` will install include/lib to system path. So, it's appliable.
