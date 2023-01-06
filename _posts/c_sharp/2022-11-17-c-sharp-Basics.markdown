@@ -14,6 +14,11 @@ string? name;
 name!.Length;
 ```
 
+#### Null-Conditional Operator (?.  ?\[\])
+A null-conditional operator applies a member access, or element access, operation to its operand only if that operand evaluates to non-null. Otherwise, it returns null.
+
+Null-conditional operator is thread-safe, for the operand is only evaluates once and used.
+
 ### Events
 The common language runtime's(CLR) event model is based on *delegates*. A delegate is a type-safe way to invoke a callback method.
 
@@ -28,3 +33,18 @@ Here are basic steps to define an event in a type:
 
 Delegates can also be used to callback instance methods. The instance object will be remembered, and passed as implicit **this** to the instance method when invoking delegates.
 
+#### Pre-defined Delegates
+There are 17 **Action** delegates defined, like this:
+```c#
+public delegate void Action();
+public delegate void Action<T>(T arg);
+public delegate void Action<T1, T2>(T1 arg1, T2 arg2);
+...
+```
+And 17 delegates with return type:
+```c#
+public delegate TResult Func<TResult>();
+public delegate TResult Func<T, TResult>(T arg);
+public delegate TResult Func<T1, T2, TResult>(T1 arg1, T2 arg2);
+...
+```

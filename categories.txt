@@ -10,3 +10,4 @@ nginx
 qt
 VisualStudio
 cpp
+build

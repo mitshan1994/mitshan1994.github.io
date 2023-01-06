@@ -78,6 +78,9 @@ Class `MediaSource` inherits `TrackSource`, and is the base class of all media s
 
 There are static functions inside it, such as `find()`, `findAsync()`, which finds the specific stream.
 
+#### MultiMediaSourceMuxer Class
+Class `MultiMediaSourceMuxer` is used to manage all kinds of muxers, and their relationships.
+
 ### Network Classes
 
 * `SockNum`: consisting of a socket file descriptor and socket type.
