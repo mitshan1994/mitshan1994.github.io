@@ -1,0 +1,23 @@
+---
+layout: post
+title:  "C++ on Linux"
+categories: cpp
+---
+
+This includes some notes about C/C++ on Linux.
+
+### Show Compiler Including Path
+```
+# c
+echo | gcc -E -Wp,-v -
+
+# cpp
+echo | cpp -xc++ -Wp,-v
+```
+
+### Show Linker Searching Path
+```
+gcc -print-search-dirs | sed '/^lib/b 1;d;:1;s,/[^/.][^/]*/\.\./,/,;t 1;s,:[^=]*=,:;,;s,;,;  ,g' | tr \; \\012 | tr : \\012
+```
+
+I didn't find any C++ version, so maybe it's same under C and C++.

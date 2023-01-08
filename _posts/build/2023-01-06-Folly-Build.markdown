@@ -30,7 +30,7 @@ libgflags.a
 
 I specify these libraries as static ones, so deprecating the compiler/linker to link the dynamic ones.
 
-I think the reason I need to link to these libraries may be one of the reasons:
+I think the reason I need to link to these libraries may be one of:
 * folly links to these libraries when building, but doesn't pack their object files together.
 * header files are dependent.
 

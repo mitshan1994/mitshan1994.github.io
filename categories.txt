@@ -11,3 +11,4 @@ qt
 VisualStudio
 cpp
 build
+tools
