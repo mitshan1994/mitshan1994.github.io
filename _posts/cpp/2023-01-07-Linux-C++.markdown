@@ -16,8 +16,14 @@ echo | cpp -xc++ -Wp,-v
 ```
 
 ### Show Linker Searching Path
+`ld` searching path can be printed using:
+```
+ld --verbose | grep SEARCH_DIR | tr -s ' ;' \\012
+```
+
+And gcc will pass some more to ld:
 ```
 gcc -print-search-dirs | sed '/^lib/b 1;d;:1;s,/[^/.][^/]*/\.\./,/,;t 1;s,:[^=]*=,:;,;s,;,;  ,g' | tr \; \\012 | tr : \\012
 ```
 
-I didn't find any C++ version, so maybe it's same under C and C++.
+I didn't find any C++ version, so maybe it's same(at least similar) under C and C++.

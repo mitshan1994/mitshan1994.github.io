@@ -19,6 +19,18 @@ A null-conditional operator applies a member access, or element access, operatio
 
 Null-conditional operator is thread-safe, for the operand is only evaluates once and used.
 
+#### Nullable Value Types
+Value types can't be `null`, so C# introduces a feature called `nullable value types` (syntactic sugar, in fact) to satisfy the need.
+
+`??` is called **null-coalescing** operator, which can be used with nullable types to set default values to some variables. It returns the value of left-side nullable type instance if it's not null, or the right-side one.
+
+#### Nullable Reference Types
+**Nullable reference types** complement reference types, just as nullable value types complement value types. It can help you express the intent more clearly: some variables must have a value, while some may be null.
+
+Nullable reference types aren't new class types, but rather annotations on existing refrence types. The compiler uses these annotations to help you find potential null reference errors in your code. There's no runtime difference between a non-nullable reference types and a nullable reference type. The benifits are in compile-time analysis.
+
+The compiler tracks the null-state of each reference variable as either *not-null* or *maybe-null*.
+
 ### Events
 The common language runtime's(CLR) event model is based on *delegates*. A delegate is a type-safe way to invoke a callback method.
 

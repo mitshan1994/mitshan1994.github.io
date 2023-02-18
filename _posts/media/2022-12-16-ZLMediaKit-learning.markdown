@@ -8,6 +8,11 @@ This is a note on zlmediakit, reading/learning its code.
 
 ## zltoolkit & zlmediakit
 
+### Compiling on Ubuntu
+My Ubuntu version is 22.04. For WebRTC, we can install openssl using `apt`. And clone the latest `srtp` using git, compile and install it. Here I install it to default place: */usr/local*.
+
+After installing `srtp`, reconfigure zlm, maybe with `-DENABLE_WEBRTC=on` passed to cmake, and compile.
+
 ### Some Classes
 
 #### AnyStorage

@@ -166,6 +166,9 @@ tmux supports mouse operations. It's enabled with the `mouse` option in the conf
 :set -g mouse off
 ```
 
+### Enter View Mode
+Use shortcut `C-b [` to enter view mode.
+
 ### Configuring tmux
 
 #### The Configuration File
