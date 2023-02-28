@@ -4,6 +4,11 @@ title:  "C# Basics"
 categories: c#
 ---
 
+### Modifiers
+#### readonly
+**readonly** modifier can be used in a field declaration. Under this circumstance, assignment to the field can only occur as part of the declaration or in a constructor in the same class. The field can't be assigned after the constructor exits. But the instance it references is mutable, except for value types.
+
+
 ### Nullable Type
 
 #### Null Forgiving Operator (!)
@@ -60,3 +65,4 @@ public delegate TResult Func<T, TResult>(T arg);
 public delegate TResult Func<T1, T2, TResult>(T1 arg1, T2 arg2);
 ...
 ```
+
