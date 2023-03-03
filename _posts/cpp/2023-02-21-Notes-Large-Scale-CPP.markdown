@@ -44,6 +44,9 @@ Acyclic physical dependencies can dramatically reduce link-time costs associated
 
 Minimizing CCD for *a given set of components* is a design goal.
 
+Allowing two components to "know" about each other via `#include` directives implies cyclic physical dependency.
+
+
 ### Guidelines
 A component x should include y.h only if x makes direct substantive use of a class or free operator function defined in y.
 
@@ -86,6 +89,9 @@ ACD(subsystem) = CCD(subsystem) / N
 ```
 NCCD(subsystem) = CCD(subsystem) / CCD_balanced_binary(N_subsystem)
 ```
+
+A subsystem is **levelizable** if it compiles and the graph implied by the include directives of the individual components (including the .c files) is acyclic.
+
 
 
 ### Random Notes
