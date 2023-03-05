@@ -46,6 +46,27 @@ Minimizing CCD for *a given set of components* is a design goal.
 
 Allowing two components to "know" about each other via `#include` directives implies cyclic physical dependency.
 
+If peer components are cyclicly dependent, it may be possible to **escalate** the interdependent functionality from each of these components to static members in a potentially new higher-level component that depends on each of the original component.
+
+Cyclic physical dependencies is large, low-level subsystems have the greatest capacity to increase the overall cost of maintaining a system.
+
+If peer components are cyclicly dependent, it may be possible to **demote** the interdependent functionality from each of the components to a potentially new lower-level (shared) component upon which each of the original components depends.
+
+Demoting common code enables independent reuse.
+
+Escalating policy and demoting the infrastructure can be combined to enhance independent use.
+
+Factoring a concrete class into two classes containing higher and lower levels of functionality can facilitate levelization.
+
+Factoring an abstract base class into two classes - one defining a pure interface, the other defining its partial implementation - can facilitate levelization.
+
+Factoring a system into smaller components makes it both more flexible and also more complex, since there are now more physical pieces to work with.
+
+Components that use objects in name only can be thoroughly tested independently of the named object.
+
+If a contained object holds a pointer to its container and implements functionality that depends substantively on that container, then we can eliminate mutual dependency by (1) making the pointer in the contained class opaque, (2) providing access to the container pointer in the public interface of the contained class, and (3) escalating the affected methods of the contained class to static member of the container class.
+
+
 
 ### Guidelines
 A component x should include y.h only if x makes direct substantive use of a class or free operator function defined in y.
@@ -92,6 +113,15 @@ NCCD(subsystem) = CCD(subsystem) / CCD_balanced_binary(N_subsystem)
 
 A subsystem is **levelizable** if it compiles and the graph implied by the include directives of the individual components (including the .c files) is acyclic.
 
+A component y **dominates** a component x if y is at a higher level than x and y depends on x physically.
+
+A function f uses a type T **in size** if compiling the body of f requires having first seen the definition of T.
+
+A function f uses a type T **in name** only if compiling f and any of the components on which f may depend does not require having first seen the definition of T.
+
+A pointer is said to be **opaque** if the definition of the type to which it points to is not included in the current translation unit.
+
+**Dumb data** is any kind of information that an object holds but does not know how to interpret. (Like opaque pointer)
 
 
 ### Random Notes
