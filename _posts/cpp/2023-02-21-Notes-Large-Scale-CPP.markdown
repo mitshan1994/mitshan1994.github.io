@@ -66,6 +66,41 @@ Components that use objects in name only can be thoroughly tested independently 
 
 If a contained object holds a pointer to its container and implements functionality that depends substantively on that container, then we can eliminate mutual dependency by (1) making the pointer in the contained class opaque, (2) providing access to the container pointer in the public interface of the contained class, and (3) escalating the affected methods of the contained class to static member of the container class.
 
+Dumb data can be used to break *in-name-only* dependencies, facilitate testability, and reduce implementation size. However, opaque pointers can preserve both type safety and encapsulation; dumb data, in general cannot.
+
+The additional coupling associated with some forms of reuse may outweigh the advantage gained from that reuse.
+
+Supplying a small amout of redundant data can enable the use of an object in name only, thus eliminating the cost of linking to the definition of that object's type.
+
+Packaging subsystems so as to minimize the cost of linking to other subsystems is a design goal.
+
+The indiscriminate use of callbacks can lead to designs that are difficult to understand, debug, and maintain.
+
+The need for callbacks can be a symptom of a poor overall architecture. (But in some context, we really need it)
+
+Establishing hierarchical ownership of lower-level objects makes a system easier to understand and more maintainable.
+
+Factoring out and demoting independently testable implementation details can reduce the cost of maintaining a collection of cyclicly dependent classes.
+
+Granting friendship does not create dependencies but can induce physical coupling in order to preserve encapsulation.
+
+What is and what is not an implementation detail depends on the level of abstraction within the physical hierarchy.
+
+Escalating the level at which encapsulation occurs can remove the need to grant private access to cooperating components within a subsystem.
+
+Private header files are not a substitute for proper encapsulation because they inhibit side-by-side reuse.
+
+Granting higher-level clients the authority to modify the interface of a lower-level shared resource implicitly couples all clients.
+
+A protocol class is a nearly perfect insulator.
+
+A protocol class can be used to eliminate both compile- and link-time dependencies.
+
+Holding only a single opaque pointer to a structure containing all of a class's private members enables a concrete class to insulate its implementation from its clients.
+
+The physical structures of all fully insulating classes appear outwardly to be identical.
+
+All fully insulating implementations can be modified without affecting any header file.
 
 
 ### Guidelines
@@ -123,6 +158,23 @@ A pointer is said to be **opaque** if the definition of the type to which it poi
 
 **Dumb data** is any kind of information that an object holds but does not know how to interpret. (Like opaque pointer)
 
+In hierarchical systems, *encapsulating a type* (defined at file scope within a header file) means hiding its use, not hiding the type itself.
+
+**Insulation** is the process of avoiding or removing unnecessary compile-time coupling.
+
+A contained implementation detail (type, data, or function) that can be altered, added or removed without forcing clients to recompile is said to be **insulated**.
+
+An abstract class is a **protocol** class if:
+1. it neither contains nor inherits from classes that contain member data, non-virtual functions, or private (or protected) members of any kind,
+2. it has a non-inline virtual destructor defined with an empty implementation, and
+3. all member functions other than destructor including inherited functions, are declared pure virtual and left undefined.
+
+A concrete class is **fully insulating** if it
+1. contains exactly one data member that is an outwardly opaque pointer to a non-const struct (defined in the .c file) specifying the implementation of that class,
+2. does not contain any other private or protected members of any kind,
+3. does not inherit from any class, and
+4. does not declare any virtual or inline functions.
+
 
 ### Random Notes
 The low-level component test should be updated to expose the errant behaviour before the defect is repaired. (It definitely facilitates the repair)
@@ -130,4 +182,10 @@ The low-level component test should be updated to expose the errant behaviour be
 NCCD is *not* a measure of the relative quality of a system. NCCD is simply a tool for characterizing the degree of coupling within a subsystem.
 
 The precise numerical value of the CCD (or the NCCD) for a given system is not important. What is important is actively designing systems to keep the CCD for each subsystem from becoming larger than necessary.
+
+If two or more objects share mutual ownership, that functionality should be escalated to a manager class.
+
+In general, the goal of insulation is to shield clients from the compile-time dependency associated with knowing unnecessary, encapsulated implementation details; it is NOT meant to shield clients from the programmatically accessible interface or to compromise type safety.
+
+Allowing inheritance or virtual functions would affect the object layout by introducing additional data and/or additional virtual-function-table pointers.
 

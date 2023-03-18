@@ -16,3 +16,12 @@ sudo lsof -i -P -n | grep LISTEN
 ```bash
 sudo netstat -tulpn | grep LISTEN
 ```
+
+### Show System Package Version
+```
+apt-cache show <package-name>
+
+# Example.
+apt-cache show cmake
+```
+
