@@ -7,8 +7,8 @@ categories: cpp
 Basics of executable/library compiling, linking, loading and executing.
 
 References:
-* CSAPP
-* Others
+* CSAPP, 3rd edition.
+* Others.
 
 ### Definitions
 **ELF**: Executable and Linkable Format.
@@ -71,5 +71,40 @@ Linux linkers use the following rules for dealing with duplicate symbol names:
 * Rule 1: Multiple strong symbols with the same name are not allowd.
 * Rule 2: Given a strong symbol and multiple weak symbols with the same name, choose the strong symbol.
 * Rule 3: Given multiple weak symbols with the same name, choose any of the weak symbols.
+
+#### Resolving References when Linking Statically
+The rules of linking is list on page 688 (7.6.3) in CSAPP 3rd edition.
+
+During symbol resolution phase, the linker scans the relocatable object files and archives left to right in the same sequential order that they appear on the compiler driver's command line. (The order is significant)
+
+If the library that defines a symbol appears on the command line before the object file that references that symbol, then the reference will not be resolved and linking will fail.
+
+### Relocation
+After the linker collects all object files to be merged, relocation begins, to merge the input modules and assigns run-time address to each symbol. Relocation consists of two steps:
+1. Relocalting sections and symbol definitions.
+2. Relocating symbol references within sections.
+
+#### Relocation Entries
+When the assembler encounters a reference to an object whose ultimate location is unknown, it generates a *relocation entry* that tells linker how to modify the reference when it merges the object file into an executable. Relocation entries for code are places in `.rel.text`. Relocation entries for data are placed in `.rel.data`.
+
+x86-64 *small code model* assumes that the total size of the code and data in the executable object file is smaller than 2GB, then thus can be accessed at run-time using 32-bit PC-relative address (Program Counter). It's default for `gcc`.
+
+### Executable Object Files
+Since the executable is *fully linked*, it needs no `.rel` sections.
+
+ELF executables are designed to be easy to load into memory, with contiguous chunks of the executable file mapped to contiguous memory segment. This mapping is described by *program header table*(*segment header table*).
+
+The process of copying the program into memory and then running it is known as *loading*.
+
+On Linux x86-64 systems, the code segment starts at address `0x40000`, followed by the data segment. The run-time `heap` follows the data segment and grows upward via calls to the `malloc` library. This is followed by a region that is reserved for shared modules.
+The user stack starts below the largest legal user address (2^48 - 1) and grows down. The region above the stack, is reserved for the code and data in the *kernel*.
+
+### Dynamic Linking with Shared Libraries
+A shared library is an object module that can be loaded at an arbitrary meomory address and linked with a program in memory. This process is known as *dynamic linking* and is performed by a program called a *dynamic linker*.
+
+During linking of executable, the linker copies some relocation and symbol table information that will allow references to code and data in shared objects to be resolved at load time. The executable is *partially linked*.
+
+After the loader loads the partially linked executable, it notices that it contains a `.interp` section, which contains the path name of the dynamic linker, which is itself a shared object (e.g. `ld-linux.so` on Linux). Instead of passing control to the application, the loader loads and runs the dynamic linker. The dynamic linker then finishes the linking task by relocating dependent shared objects into memory, relocating undefined symbols in executable.
+
 
 
