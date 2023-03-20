@@ -36,6 +36,6 @@ struct ip {
 #endif
 ```
 And the ip header format is:
-![ip_header_pic](/assets/ip_header_format.png)
+![ip_header_pic](/assets/system/ip_header_format.png)
 
 
