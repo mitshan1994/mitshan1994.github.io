@@ -1,0 +1,27 @@
+---
+layout: post
+title:  "C# Strings"
+categories: c#
+---
+
+### Format Numbers
+
+Comma seperated formats:
+
+```
+int number = 123456789;
+string strNum = number.ToString("N0");
+```
+
+Outcome will be: "123,456,789", where "0" after "N" indicates the digits after dot.
+
+Reference: [Standard numeric format strings](https://learn.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings)
+
+### String Fixed Print Width
+
+```
+string str = "abc";
+string output = $"fix width string: {str, 15}";
+string leftAligned = $"fix width string: {str, -15}";
+```
+
