@@ -56,3 +56,29 @@ There should be a "source of truth", for any data which may change in React.
 
 ### this.props.children
 Inside the React component tag, elements will be generated and pass to the component as **props.children**.
+
+### Styles
+
+You can specify a CSS style in React using `className`, which is equivalent to `class` attribute in HTML.
+
+## Functional Components
+
+### Hooks
+
+Functions starting with `use` are called *Hooks*. `useState` is a React built-in hook.You can only call Hooks at the top of the component.
+
+### States
+
+Here is a example of state management in function-based components:
+
+```javascript
+import { useState } from 'react';
+
+function MyButton() {
+	const [count, setCount] = useState(0);
+	...
+}
+```
+
+Above defines a state and its getter & setter.
+
